@@ -4,11 +4,6 @@ import { useEffect } from "react";
 import withAuth from "../components/withAuth";
 
 const Home = () => {
-  useEffect(() => {
-    const user = supabase.auth.session();
-    console.log(user);
-  }, []);
-
   return (
     <>
       <Header />
