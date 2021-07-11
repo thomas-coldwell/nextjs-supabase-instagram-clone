@@ -10,11 +10,27 @@ import InstagramLogo from "../../public/instagram.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import withAuthRedirect from "../../components/withAuthRedirect";
-
+import { useMutation } from "react-query";
+import { baseUrl } from "../../lib/auth";
+import { Prisma } from "@prisma/client";
+import { PhotoInput } from "../../components/PhotoInput";
 interface SignUpValues {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  profilePicture: string;
 }
+
+const initialValues: SignUpValues = {
+  email: "",
+  password: "",
+  firstName: "",
+  lastName: "",
+  username: "",
+  profilePicture: "",
+};
 
 const SignUp = () => {
   //
@@ -22,12 +38,21 @@ const SignUp = () => {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async ({ email, password }: SignUpValues) => {
+  const userMutation = useMutation(async (user: Prisma.UserCreateInput) => {
+    await fetch(`${baseUrl}/api/user`, {
+      method: "POST",
+      body: JSON.stringify(user),
+    });
+  });
+
+  const handleSubmit = async ({ email, password, ...rest }: SignUpValues) => {
     setSubmitting(true);
-    const { user, error } = await supabase.auth.signUp({ email, password });
-    if (user) {
+    try {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+      await userMutation.mutate({ email, ...rest });
       router.push("/");
-    } else {
+    } catch (error) {
       alert(error ? error.message : "An unknown error occurred.");
       setSubmitting(false);
     }
@@ -44,16 +69,14 @@ const SignUp = () => {
           width={140}
         />
       </div>
-      <h1 className="mb-8 text-2xl text-center text-gray-800">
+      <h1 className="mb-6 text-2xl text-center text-gray-800">
         Sign up by entering an email and password below...
       </h1>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={handleSubmit}
-      >
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ values, handleChange }) => {
           return (
-            <Form>
+            <Form className="flex flex-col items-center w-full">
+              <PhotoInput className="w-1/2 mb-4 aspect-w-2 aspect-h-1" />
               <Input
                 placeholder="Enter your email..."
                 disabled={submitting}
@@ -66,6 +89,24 @@ const SignUp = () => {
                 value={values.password}
                 onChange={handleChange("password")}
                 type="password"
+              />
+              <Input
+                placeholder="Enter your first name..."
+                disabled={submitting}
+                value={values.firstName}
+                onChange={handleChange("firstName")}
+              />
+              <Input
+                placeholder="Enter your last name..."
+                disabled={submitting}
+                value={values.lastName}
+                onChange={handleChange("lastName")}
+              />
+              <Input
+                placeholder="Enter a username..."
+                disabled={submitting}
+                value={values.username}
+                onChange={handleChange("username")}
               />
               <Button type="submit" disabled={submitting} className="mb-4">
                 Sign up
