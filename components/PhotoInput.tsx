@@ -4,6 +4,7 @@ import Image from "next/image";
 import * as React from "react";
 import cn from "classnames";
 import { MdAddAPhoto, MdEdit, MdInsertPhoto } from "react-icons/md";
+import { useIsTouchDevice } from "../utils/useIsTouchDevice";
 
 interface IPhotoInputProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -31,6 +32,8 @@ export const PhotoInput = (props: IPhotoInputProps) => {
     onDrop,
   });
 
+  const isTouchscreen = useIsTouchDevice();
+
   return (
     <>
       <div
@@ -39,6 +42,7 @@ export const PhotoInput = (props: IPhotoInputProps) => {
           "bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden",
           className
         )}
+        {...rest}
       >
         {editablePhoto ? (
           <div
@@ -62,8 +66,10 @@ export const PhotoInput = (props: IPhotoInputProps) => {
               )}
             >
               <MdAddAPhoto className="w-8 h-8 mb-2" />
-              <p className="px-4 text-sm font-medium text-center">
-                Drag and drop a photo, or click to upload
+              <p className="px-4 text-xs font-medium text-center md:text-sm">
+                {!isTouchscreen
+                  ? "Drag and drop a photo, or click to upload"
+                  : "Click to upload"}
               </p>
             </div>
           </div>

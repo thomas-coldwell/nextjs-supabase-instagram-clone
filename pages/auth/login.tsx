@@ -34,7 +34,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen max-w-md px-4">
+    <div className="flex flex-col items-center justify-center w-full h-full max-w-md px-4 min-h-screen-vp">
       <div className="mb-4">
         <Image
           src={InstagramLogo}

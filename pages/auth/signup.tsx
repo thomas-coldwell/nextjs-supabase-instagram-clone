@@ -59,7 +59,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen max-w-md px-4">
+    <div className="flex flex-col items-center justify-center w-full h-full max-w-md min-h-screen px-4 py-8">
       <div className="mb-4">
         <Image
           src={InstagramLogo}

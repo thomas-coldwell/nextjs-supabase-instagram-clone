@@ -2,10 +2,21 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Layout } from "../components/Layout";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
+  //
+
+  // https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+  useEffect(() => {
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Layout>
@@ -14,4 +25,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </QueryClientProvider>
   );
 }
+
 export default MyApp;

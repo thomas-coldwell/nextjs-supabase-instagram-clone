@@ -15,15 +15,22 @@
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
+    "modernizr": "^3.11.7",
     "next": "11.0.1",
+    "next-useragent": "^2.5.1",
+    "postcss-100vh-fix": "^1.0.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-dropzone": "^11.3.4",
     "react-icons": "^4.2.0",
-    "react-query": "^3.18.1"
+    "react-query": "^3.18.1",
+    "react-responsive": "^8.2.0",
+    "react-use": "^17.2.4"
   },
   "devDependencies": {
+    "@types/modernizr": "^3.5.3",
     "@types/react": "17.0.13",
+    "@types/react-responsive": "^8.0.3",
     "autoprefixer": "^10.2.6",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",

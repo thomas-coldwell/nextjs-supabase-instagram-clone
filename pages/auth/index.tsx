@@ -10,8 +10,6 @@ const Auth = () => {
   //
   const router = useRouter();
 
-  const session = supabase.auth.session();
-
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen max-w-md">
       <div className="mb-2">
