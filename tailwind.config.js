@@ -3,6 +3,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      height: {
+        "screen-vp": "calc(var(--vh, 1vh) * 100);",
+      },
       minHeight: {
         "screen-vp": "calc(var(--vh, 1vh) * 100);",
       },

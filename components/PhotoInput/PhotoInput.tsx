@@ -4,17 +4,23 @@ import Image from "next/image";
 import * as React from "react";
 import cn from "classnames";
 import { MdAddAPhoto, MdEdit, MdInsertPhoto } from "react-icons/md";
-import { useIsTouchDevice } from "../utils/useIsTouchDevice";
+import { useIsTouchDevice } from "../../utils/useIsTouchDevice";
+import { ImageEditor } from "./ImageEditor";
+import Pica from "pica";
 
-interface IPhotoInputProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface IPhotoInputProps extends React.HTMLAttributes<HTMLDivElement> {
+  description: string;
+}
 
 export const PhotoInput = (props: IPhotoInputProps) => {
   //
-  const { className, ...rest } = props;
+  const { description, className, ...rest } = props;
 
-  const [isCropperOpen, setCropperOpen] = useState(false);
+  const [isEditorOpen, setEditorOpen] = useState(false);
 
   const [editablePhoto, setEditablePhoto] = useState<string>();
+
+  const [finalResult, setFinalResult] = useState<string>();
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -22,7 +28,7 @@ export const PhotoInput = (props: IPhotoInputProps) => {
     reader.addEventListener("load", (event) => {
       if (event.target) {
         setEditablePhoto(event.target.result as string);
-        setCropperOpen(true);
+        setEditorOpen(true);
       }
     });
     reader.readAsDataURL(acceptedFiles[0]);
@@ -30,9 +36,21 @@ export const PhotoInput = (props: IPhotoInputProps) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    accept: "image/jpeg, image/png",
+    maxFiles: 1,
   });
 
   const isTouchscreen = useIsTouchDevice();
+
+  const onConfirmEditing = async (result: string) => {
+    setFinalResult(result);
+    setEditorOpen(false);
+  };
+
+  const onCancelEditing = () => {
+    setEditablePhoto(undefined);
+    setEditorOpen(false);
+  };
 
   return (
     <>
@@ -44,11 +62,11 @@ export const PhotoInput = (props: IPhotoInputProps) => {
         )}
         {...rest}
       >
-        {editablePhoto ? (
+        {finalResult ? (
           <div
             className="w-full h-full"
             style={{
-              backgroundImage: `url(${editablePhoto})`,
+              backgroundImage: `url(${finalResult})`,
               backgroundSize: "cover",
             }}
           >
@@ -68,14 +86,20 @@ export const PhotoInput = (props: IPhotoInputProps) => {
               <MdAddAPhoto className="w-8 h-8 mb-2" />
               <p className="px-4 text-xs font-medium text-center md:text-sm">
                 {!isTouchscreen
-                  ? "Drag and drop a photo, or click to upload"
-                  : "Click to upload"}
+                  ? `Drag and drop or click to upload a ${description}`
+                  : `Click to upload a ${description}`}
               </p>
             </div>
           </div>
         )}
         <input style={{ outline: "none" }} {...getInputProps()} />
       </div>
+      <ImageEditor
+        isVisible={isEditorOpen}
+        src={editablePhoto}
+        onConfirm={onConfirmEditing}
+        onCancel={onCancelEditing}
+      />
     </>
   );
 };
