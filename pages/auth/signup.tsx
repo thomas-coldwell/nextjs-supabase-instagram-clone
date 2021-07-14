@@ -78,6 +78,7 @@ const SignUp = () => {
         ...rest,
       });
       await userMutation.mutate({
+        id: signUp.user.id,
         email,
         profilePicture: avatarPath,
         ...rest,

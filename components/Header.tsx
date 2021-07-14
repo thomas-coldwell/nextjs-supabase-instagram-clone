@@ -5,6 +5,8 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { Button } from "./Button";
 import { supabase } from "../lib/supabase";
 import { useRouter } from "next/router";
+import { useCurrentUser } from "../data/queries/useCurrentUser";
+import { useMemo } from "react";
 
 export const Header = () => {
   //
@@ -14,6 +16,8 @@ export const Header = () => {
     await supabase.auth.signOut();
     router.replace("/auth");
   };
+
+  const { data: user } = useCurrentUser();
 
   return (
     <div className="flex flex-row items-center justify-between w-full h-24">
@@ -34,12 +38,18 @@ export const Header = () => {
             <MdFavoriteBorder className="w-8 h-8 mr-4 text-gray-600" />
           </a>
         </Link>
-        <button
-          className="flex items-center justify-center w-20 h-10 font-semibold text-white bg-blue-500 rounded-md"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+        <Link href={`/users/${user?.username}`}>
+          <a className="relative w-10 h-10 overflow-hidden bg-gray-300 rounded-full">
+            {user && (
+              <Image
+                src={user.profilePicture}
+                className="w-full h-full"
+                alt={`${user?.firstName} ${user?.lastName}`}
+                layout="fill"
+              />
+            )}
+          </a>
+        </Link>
       </div>
     </div>
   );

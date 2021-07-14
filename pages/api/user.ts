@@ -13,7 +13,7 @@ export default function handler(
     const id = req.query.id;
     if (typeof id === "string") {
       const user = await prisma.user.findUnique({
-        where: { id: parseInt(id) },
+        where: { id },
       });
       if (user) {
         return res.status(200).json(user);

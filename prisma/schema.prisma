@@ -15,7 +15,7 @@ model Post {
   images    String[]
   caption   String
   author    User   @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   tags PostTag[]
   likes PostLike[]
   comments PostComment[]
@@ -25,7 +25,7 @@ model Post {
 model PostLike {
   id        Int @id @default(autoincrement())
   user      User   @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
   post      Post @relation(fields: [postId], references: [id])
   postId    Int
   createdAt DateTime @default(now())
@@ -43,12 +43,12 @@ model PostComment {
   postId    Int
   comment String
   author    User   @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   createdAt DateTime @default(now())
 }
 
 model User {
-  id             Int     @id @default(autoincrement())
+  id             String     @id @default(cuid())
   email          String  @unique
   firstName      String
   lastName       String
@@ -65,8 +65,8 @@ model User {
 model Follower {
   id Int @id @default(autoincrement())
   user User @relation(name: "UserFollower", fields: [userId], references: [id])
-  userId Int
+  userId String
   follower User @relation(name: "UserFollowing", fields: [followerId], references: [id])
-  followerId Int
+  followerId String
   createdAt DateTime @default(now())
 }
