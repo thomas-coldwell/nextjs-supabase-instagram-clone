@@ -28,7 +28,7 @@ export const ImageEditor = (props: IImageEditorProps) => {
     }
   }, [isVisible]);
 
-  const onCrop = () => {
+  const onCrop = async () => {
     const imageElement = cropperRef.current;
     console.log(imageElement);
     if (imageElement) {
@@ -40,8 +40,8 @@ export const ImageEditor = (props: IImageEditorProps) => {
   return (
     <Modal
       isOpen={isVisible}
-      className="flex flex-col items-center w-full p-4 bg-white rounded-lg outline-none"
-      overlayClassName="p-4 w-screen h-screen-vp bg-gray-700 bg-opacity-80 fixed top-0 left-0 flex items-center justify-center"
+      className="flex flex-col items-center w-full h-full max-w-5xl p-4 bg-white rounded-lg outline-none"
+      overlayClassName="p-4 w-screen h-screen-vp bg-gray-700 bg-opacity-80 fixed top-0 left-0 flex items-center justify-center lg:p-16"
       ariaHideApp={false}
     >
       <div className="flex flex-row justify-start w-full mb-4">
@@ -53,7 +53,7 @@ export const ImageEditor = (props: IImageEditorProps) => {
           <p className="font-medium">Back</p>
         </button>
       </div>
-      <div className="w-full mb-4 aspect-w-1 aspect-h-1">
+      <div className="flex-1 w-full mb-4">
         <Cropper
           style={{ width: "100%", height: "100%" }}
           src={src}

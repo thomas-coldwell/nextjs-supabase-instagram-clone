@@ -10,17 +10,19 @@ import Pica from "pica";
 
 interface IPhotoInputProps extends React.HTMLAttributes<HTMLDivElement> {
   description: string;
+  value: string;
+  disabled: boolean;
+  onImageChange: (result: string) => void;
 }
 
 export const PhotoInput = (props: IPhotoInputProps) => {
   //
-  const { description, className, ...rest } = props;
+  const { description, className, value, disabled, onImageChange, ...rest } =
+    props;
 
   const [isEditorOpen, setEditorOpen] = useState(false);
 
   const [editablePhoto, setEditablePhoto] = useState<string>();
-
-  const [finalResult, setFinalResult] = useState<string>();
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -43,7 +45,7 @@ export const PhotoInput = (props: IPhotoInputProps) => {
   const isTouchscreen = useIsTouchDevice();
 
   const onConfirmEditing = async (result: string) => {
-    setFinalResult(result);
+    onImageChange(result);
     setEditorOpen(false);
   };
 
@@ -58,15 +60,16 @@ export const PhotoInput = (props: IPhotoInputProps) => {
         {...getRootProps({ className: "dropzone" })}
         className={cn(
           "bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden",
+          disabled && "filter grayscale cursor-not-allowed pointer-events-none",
           className
         )}
         {...rest}
       >
-        {finalResult ? (
+        {value ? (
           <div
             className="w-full h-full"
             style={{
-              backgroundImage: `url(${finalResult})`,
+              backgroundImage: `url(${value})`,
               backgroundSize: "cover",
             }}
           >

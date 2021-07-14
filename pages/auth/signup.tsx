@@ -14,7 +14,7 @@ import { useMutation } from "react-query";
 import { baseUrl } from "../../lib/auth";
 import { Prisma } from "@prisma/client";
 import { PhotoInput } from "../../components/PhotoInput/PhotoInput";
-import { uriToBlob } from "../../utils/uriToBlob";
+import { uriToFile } from "../../utils/uriToFile";
 
 interface SignUpValues {
   email: string;
@@ -63,20 +63,25 @@ const SignUp = () => {
         password,
       });
       if (!signUp.user || signUp.error) throw signUp.error;
-      const avatarBlob = await uriToBlob(profilePicture, {
+      const avatarFile = await uriToFile(profilePicture, {
         width: 300,
         height: 300,
       });
       const avatarPath = `${signUp.user.id}/profile.jpg`;
-      const avatar = await supabase.storage.from("avatars").upload(
-        avatarPath,
-        new File([avatarBlob], "profile", {
-          lastModified: new Date().getTime(),
-          type: avatarBlob.type,
-        })
-      );
+      const avatar = await supabase.storage
+        .from("avatars")
+        .upload(avatarPath, avatarFile);
       if (!avatar.data || avatar.error) throw avatar.error;
-      await userMutation.mutate({ email, profilePicture: avatarPath, ...rest });
+      console.log({
+        email,
+        profilePicture: avatarPath,
+        ...rest,
+      });
+      await userMutation.mutate({
+        email,
+        profilePicture: avatarPath,
+        ...rest,
+      });
       router.push("/");
     } catch (error) {
       alert(error ? error.message : "An unknown error occurred.");
@@ -99,12 +104,15 @@ const SignUp = () => {
         Sign up by entering your details below...
       </h1>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ values, handleChange }) => {
+        {({ values, handleChange, setFieldValue }) => {
           return (
             <Form className="flex flex-col items-center w-full">
               <PhotoInput
                 className="w-1/2 mb-4 aspect-w-2 aspect-h-1"
                 description="profile picture"
+                value={values.profilePicture}
+                disabled={submitting}
+                onImageChange={(blob) => setFieldValue("profilePicture", blob)}
               />
               <Input
                 placeholder="Enter your email..."
