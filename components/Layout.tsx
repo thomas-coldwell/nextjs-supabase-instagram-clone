@@ -6,7 +6,7 @@ export const Layout = (props: ILayoutProps) => {
   return (
     <div className="flex flex-col items-center w-full">
       <div className="flex flex-col items-center w-screen max-w-4xl overflow-x-hidden">
-        <div className="flex flex-col items-center w-full px-2">
+        <div className="flex flex-col items-center w-full">
           {props.children}
         </div>
       </div>

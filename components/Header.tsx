@@ -38,7 +38,7 @@ export const Header = () => {
             <MdFavoriteBorder className="w-8 h-8 mr-4 text-gray-600" />
           </a>
         </Link>
-        <Link href={`/users/${user?.username}`}>
+        <Link href={`/user/${user?.username}`}>
           <a className="relative w-10 h-10 overflow-hidden bg-gray-300 rounded-full">
             {user && (
               <Image

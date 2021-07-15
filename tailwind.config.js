@@ -9,6 +9,9 @@ module.exports = {
       minHeight: {
         "screen-vp": "calc(var(--vh, 1vh) * 100);",
       },
+      screens: {
+        xs: "640px",
+      },
     },
   },
   variants: {
