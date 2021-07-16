@@ -8,14 +8,15 @@ import { useRouter } from "next/router";
 import { useCurrentUser } from "../data/queries/useCurrentUser";
 import { useMemo } from "react";
 
-export const Header = () => {
-  //
-  const router = useRouter();
+interface IHeaderProps {
+  showAddPost?: boolean;
+}
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.replace("/auth");
-  };
+export const Header = (props: IHeaderProps) => {
+  //
+  const { showAddPost } = props;
+
+  const router = useRouter();
 
   const { data: user } = useCurrentUser();
 
@@ -33,23 +34,30 @@ export const Header = () => {
         </a>
       </Link>
       <div className="flex flex-row items-center">
+        {showAddPost && (
+          <div className="mr-4 w-28">
+            <Button>Add Post</Button>
+          </div>
+        )}
         <Link href="/likes">
           <a>
             <MdFavoriteBorder className="w-8 h-8 mr-4 text-gray-600" />
           </a>
         </Link>
-        <Link href={`/user/${user?.username}`}>
-          <a className="relative w-10 h-10 overflow-hidden bg-gray-300 rounded-full">
-            {user && (
-              <Image
-                src={user.profilePicture}
-                className="w-full h-full"
-                alt={`${user?.firstName} ${user?.lastName}`}
-                layout="fill"
-              />
-            )}
-          </a>
-        </Link>
+        <div className="relative w-10 h-10">
+          <Link href={`/user/${user?.username}`}>
+            <a className="absolute w-full h-full overflow-hidden bg-gray-300 rounded-full">
+              {user && (
+                <Image
+                  src={user.profilePicture}
+                  className="w-full h-full"
+                  alt={`${user?.firstName} ${user?.lastName}`}
+                  layout="fill"
+                />
+              )}
+            </a>
+          </Link>
+        </div>
       </div>
     </div>
   );
