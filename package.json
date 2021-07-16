@@ -28,7 +28,8 @@
     "react-modal": "^3.14.3",
     "react-query": "^3.18.1",
     "react-responsive": "^8.2.0",
-    "react-use": "^17.2.4"
+    "react-use": "^17.2.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/modernizr": "^3.5.3",
@@ -37,6 +38,7 @@
     "@types/react": "17.0.13",
     "@types/react-modal": "^3.12.1",
     "@types/react-responsive": "^8.0.3",
+    "@types/uuid": "^8.3.1",
     "autoprefixer": "^10.2.6",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",

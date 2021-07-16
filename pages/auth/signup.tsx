@@ -38,8 +38,6 @@ const SignUp = () => {
   //
   const router = useRouter();
 
-  const [submitting, setSubmitting] = useState(false);
-
   const userMutation = useMutation(async (user: Prisma.UserCreateInput) => {
     const response = await fetch(`${baseUrl}/api/user`, {
       method: "POST",
@@ -56,7 +54,6 @@ const SignUp = () => {
     profilePicture,
     ...rest
   }: SignUpValues) => {
-    setSubmitting(true);
     try {
       const signUp = await supabase.auth.signUp({
         email,
@@ -72,11 +69,6 @@ const SignUp = () => {
         .from("avatars")
         .upload(avatarPath, avatarFile);
       if (!avatar.data || avatar.error) throw avatar.error;
-      console.log({
-        email,
-        profilePicture: avatarPath,
-        ...rest,
-      });
       await userMutation.mutate({
         id: signUp.user.id,
         email,
@@ -86,7 +78,6 @@ const SignUp = () => {
       router.push("/");
     } catch (error) {
       alert(error ? error.message : "An unknown error occurred.");
-      setSubmitting(false);
     }
   };
 
@@ -105,26 +96,26 @@ const SignUp = () => {
         Sign up by entering your details below...
       </h1>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        {({ values, handleChange, setFieldValue }) => {
+        {({ values, handleChange, setFieldValue, isSubmitting }) => {
           return (
             <Form className="flex flex-col items-center w-full">
               <PhotoInput
                 className="w-1/2 mb-4 aspect-w-2 aspect-h-1"
                 description="profile picture"
                 value={values.profilePicture}
-                disabled={submitting}
+                disabled={isSubmitting}
                 onImageChange={(blob) => setFieldValue("profilePicture", blob)}
               />
               <Input
                 placeholder="Enter your email..."
-                disabled={submitting}
+                disabled={isSubmitting}
                 value={values.email}
                 onChange={handleChange("email")}
                 autoComplete="email"
               />
               <Input
                 placeholder="Create a password..."
-                disabled={submitting}
+                disabled={isSubmitting}
                 value={values.password}
                 onChange={handleChange("password")}
                 type="password"
@@ -132,23 +123,23 @@ const SignUp = () => {
               />
               <Input
                 placeholder="Enter your first name..."
-                disabled={submitting}
+                disabled={isSubmitting}
                 value={values.firstName}
                 onChange={handleChange("firstName")}
               />
               <Input
                 placeholder="Enter your last name..."
-                disabled={submitting}
+                disabled={isSubmitting}
                 value={values.lastName}
                 onChange={handleChange("lastName")}
               />
               <Input
                 placeholder="Enter a username..."
-                disabled={submitting}
+                disabled={isSubmitting}
                 value={values.username}
                 onChange={handleChange("username")}
               />
-              <Button type="submit" disabled={submitting} className="mb-4">
+              <Button type="submit" disabled={isSubmitting} className="mb-4">
                 Sign up
               </Button>
             </Form>

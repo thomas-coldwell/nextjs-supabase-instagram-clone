@@ -10,7 +10,19 @@ module.exports = {
         "screen-vp": "calc(var(--vh, 1vh) * 100);",
       },
       screens: {
-        xs: "640px",
+        xs: "512px",
+      },
+      width: {
+        "lg-1": "128px",
+        "lg-2": "256px",
+        "lg-3": "384px",
+        "lg-4": "512px",
+      },
+      height: {
+        "lg-1": "128px",
+        "lg-2": "256px",
+        "lg-3": "384px",
+        "lg-4": "512px",
       },
     },
   },

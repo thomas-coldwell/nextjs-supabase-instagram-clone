@@ -36,7 +36,7 @@ export const Header = (props: IHeaderProps) => {
       <div className="flex flex-row items-center">
         {showAddPost && (
           <div className="mr-4 w-28">
-            <Button>Add Post</Button>
+            <Button onClick={() => router.push("/post")}>Add Post</Button>
           </div>
         )}
         <Link href="/likes">
