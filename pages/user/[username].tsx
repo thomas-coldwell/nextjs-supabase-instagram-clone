@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import { Header } from "../../components/Header";
 import {
   ProfileDetails,
   UserProfileDetails,
@@ -16,6 +17,7 @@ const UserProfile = (props: IUserProps) => {
 
   return (
     <div className="w-full px-4">
+      <Header />
       <ProfileDetails user={user} />
     </div>
   );
@@ -33,6 +35,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       username: true,
       profilePicture: true,
       id: true,
+      _count: {
+        select: { followers: true, followings: true, posts: true },
+      },
     },
   });
   if (user) {

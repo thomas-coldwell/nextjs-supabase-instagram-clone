@@ -9,7 +9,7 @@ import { Details } from "./Name";
 export type UserProfileDetails = Pick<
   User,
   "firstName" | "lastName" | "username" | "profilePicture" | "id"
->;
+> & { _count: { followers: number; followings: number; posts: number } };
 
 interface IProfileDetails {
   user: UserProfileDetails;
@@ -26,7 +26,7 @@ export const ProfileDetails = ({ user }: IProfileDetails) => {
         <>
           <div className="flex flex-row items-center w-full my-4">
             <Avatar {...user} />
-            <CounterRow />
+            <CounterRow {...user} />
           </div>
           <Details {...user} />
           <ActionButton {...user} />
@@ -39,7 +39,7 @@ export const ProfileDetails = ({ user }: IProfileDetails) => {
               <Details {...user} />
               <ActionButton {...user} />
             </div>
-            <CounterRow />
+            <CounterRow {...user} />
           </div>
         </div>
       )}
