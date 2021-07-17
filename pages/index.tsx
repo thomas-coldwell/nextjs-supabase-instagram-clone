@@ -5,6 +5,10 @@ import withAuth from "../components/withAuth";
 import { MdAdd } from "react-icons/md";
 import useResponsive from "../utils/useResponsive";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import { prisma } from "../lib/prisma";
+import { useFeed } from "../data/queries/useFeed";
+import Post from "../components/screens/Home/Post";
 
 const Home = () => {
   //
@@ -12,10 +16,15 @@ const Home = () => {
 
   const router = useRouter();
 
+  const { data: posts } = useFeed();
+
   return (
     <>
       <div className="w-full px-4">
         <Header showAddPost={!(isMobile || isSmallMobile)} />
+        {posts?.map((post) => (
+          <Post key={post.id} data={post} />
+        ))}
       </div>
       {(isMobile || isSmallMobile) && (
         <button
