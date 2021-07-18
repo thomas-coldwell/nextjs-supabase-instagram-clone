@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { useMemo } from "react";
 import { MdComment, MdFavoriteBorder } from "react-icons/md";
 import { supabase } from "../../../lib/supabase";
+import dayjs from "dayjs";
+
 interface IPostProps {
   data: PostInterface & {
     author: User;
@@ -43,6 +45,20 @@ const Post = ({ data }: IPostProps) => {
     };
     downloadImage();
   }, [images, author]);
+
+  const postAge = useMemo(() => {
+    const deltaInSeconds = dayjs(new Date()).diff(createdAt) / 1000;
+    const minutes = deltaInSeconds / 60;
+    const hours = minutes / 60;
+    const days = hours / 24;
+    if (minutes < 60) {
+      return `${minutes.toFixed(0)} mins ago`;
+    } else if (hours < 24) {
+      return `${hours.toFixed(0)} hours ago`;
+    } else {
+      return `${days.toFixed(0)} days ago`;
+    }
+  }, [createdAt]);
 
   return (
     <div className="flex flex-col w-full max-w-md mb-4">
@@ -85,6 +101,7 @@ const Post = ({ data }: IPostProps) => {
       <p className="text-gray-800">
         <span className="font-medium">{author.username}</span> {caption}
       </p>
+      <p className="text-sm text-gray-400">{postAge}</p>
     </div>
   );
 };

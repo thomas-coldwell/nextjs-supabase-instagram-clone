@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("MIGRATION_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {

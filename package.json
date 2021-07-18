@@ -14,6 +14,7 @@
     "@supabase/ui": "^0.28.1",
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "classnames": "^2.3.1",
+    "dayjs": "^1.10.6",
     "formik": "^2.2.9",
     "imtool": "^1.1.4",
     "modernizr": "^3.11.7",
