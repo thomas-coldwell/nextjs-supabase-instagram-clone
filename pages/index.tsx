@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="w-full px-4">
+      <div className="box-border flex flex-col items-center w-full px-4 pb-36 md:pb-0">
         <Header showAddPost={!(isMobile || isSmallMobile)} />
         {posts?.map((post) => (
           <Post key={post.id} data={post} />
