@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import { MdComment, MdFavoriteBorder } from "react-icons/md";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../../../../lib/supabase";
 import dayjs from "dayjs";
+import { IconButton } from "./IconButton";
 
 interface IPostProps {
   data: PostInterface & {
@@ -91,15 +92,14 @@ const Post = ({ data }: IPostProps) => {
         )}
       </div>
       <div className="flex flex-row items-center w-full mb-4">
-        <button className="w-8 h-8 mr-2 text-gray-300">
-          <MdFavoriteBorder className="w-full h-full" />
-        </button>
-        <button className="w-8 h-8 text-gray-300">
-          <MdComment className="w-full h-full" />
-        </button>
+        <IconButton icon={MdFavoriteBorder} />
+        <IconButton icon={MdComment} />
       </div>
       <p className="text-gray-800">
-        <span className="font-medium">{author.username}</span> {caption}
+        <Link href={`/user/${author.username}`}>
+          <a className="font-medium">{author.username}</a>
+        </Link>{" "}
+        {caption}
       </p>
       <p className="text-sm text-gray-400">{postAge}</p>
     </div>

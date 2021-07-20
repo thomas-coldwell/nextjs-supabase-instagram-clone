@@ -4,6 +4,7 @@ import {
   ProfileDetails,
   UserProfileDetails,
 } from "../../components/screens/User/ProfileDetails";
+import withAuth from "../../components/withAuth";
 import { prisma } from "../../lib/prisma";
 import { supabase } from "../../lib/supabase";
 
@@ -23,7 +24,7 @@ const UserProfile = (props: IUserProps) => {
   );
 };
 
-export default UserProfile;
+export default withAuth(UserProfile);
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const username = context.params?.username?.toString() ?? "";

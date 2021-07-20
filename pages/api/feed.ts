@@ -16,9 +16,15 @@ export default function handler(
   const getPosts = async () => {
     const userId = req.query.userId;
     if (typeof userId === "string") {
+      const followings = await (
+        await prisma.user
+          .findFirst({ where: { id: userId } })
+          .followings({ include: { user: true } })
+      ).map((following) => following.user);
       const posts = await prisma.post.findMany({
-        where: { authorId: userId },
+        where: { author: { id: { in: followings.map((user) => user.id) } } },
         include: { author: true },
+        orderBy: [{ createdAt: "desc" }],
       });
       if (posts) {
         return res.status(200).json(posts);

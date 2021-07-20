@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { baseUrl } from "../lib/auth";
 import { supabase } from "../lib/supabase";
 
-type AuthedComponent = React.ComponentType;
+type AuthedComponent = React.ComponentType<any>;
 
 const withAuth = (AuthedComponent: AuthedComponent) => {
   return (props: any) => {

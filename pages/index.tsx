@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { prisma } from "../lib/prisma";
 import { useFeed } from "../data/queries/useFeed";
-import Post from "../components/screens/Home/Post";
+import Post from "../components/screens/Home/Post/Post";
 
 const Home = () => {
   //
