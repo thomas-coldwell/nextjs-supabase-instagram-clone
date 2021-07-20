@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabase";
-import { Header } from "../components/Header";
+import { Header } from "../components/Header/Header";
 import { useEffect } from "react";
 import withAuth from "../components/withAuth";
 import { MdAdd } from "react-icons/md";

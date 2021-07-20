@@ -1,13 +1,11 @@
-import InstagramLogo from "../public/instagram.svg";
+import InstagramLogo from "../../public/instagram.svg";
 import Link from "next/link";
 import Image from "next/image";
 import { MdArrowDropDown, MdFavoriteBorder } from "react-icons/md";
-import { Button } from "./Button";
-import { supabase } from "../lib/supabase";
+import { Button } from "../Button";
 import { useRouter } from "next/router";
-import { useCurrentUser } from "../data/queries/useCurrentUser";
-import { useMemo } from "react";
-import { useState } from "react";
+import { useCurrentUser } from "../../data/queries/useCurrentUser";
+import { Dropdown } from "./Dropdown";
 
 interface IHeaderProps {
   showAddPost?: boolean;
@@ -16,8 +14,6 @@ interface IHeaderProps {
 export const Header = (props: IHeaderProps) => {
   //
   const { showAddPost } = props;
-
-  const [menuVisible, setMenuVisible] = useState(false);
 
   const router = useRouter();
 
@@ -61,32 +57,7 @@ export const Header = (props: IHeaderProps) => {
             </a>
           </Link>
         </div>
-        <div className="relative">
-          <button onClick={() => setMenuVisible((vis) => !vis)}>
-            <MdArrowDropDown className="w-8 h-8 text-gray-500" />
-          </button>
-          {menuVisible && (
-            <div className="absolute right-0 mt-4 overflow-hidden rounded-md shadow">
-              <button
-                className="w-full px-4 py-2 text-sm font-medium text-left whitespace-nowrap hover:bg-blue-400 hover:text-white"
-                onClick={() => {
-                  router.push(`/user/${user?.username}`);
-                }}
-              >
-                My Profile
-              </button>
-              <button
-                className="w-full px-4 py-2 text-sm font-medium text-left whitespace-nowrap hover:bg-red-400 hover:text-white"
-                onClick={async () => {
-                  await supabase.auth.signOut();
-                  router.replace("/auth");
-                }}
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+        <Dropdown />
       </div>
     </div>
   );

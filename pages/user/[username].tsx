@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { Header } from "../../components/Header";
+import { Header } from "../../components/Header/Header";
 import {
   ProfileDetails,
   UserProfileDetails,
