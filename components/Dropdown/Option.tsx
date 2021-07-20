@@ -1,11 +1,11 @@
 import classNames from "classnames";
 
-interface IDropdownOptionProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface IOptionProps extends React.HTMLAttributes<HTMLButtonElement> {
   type?: "destructive" | "normal";
   text: string;
 }
 
-export const DropdownOption = (props: IDropdownOptionProps) => {
+export const Option = (props: IOptionProps) => {
   //
   const { type = "normal", text, ...rest } = props;
 

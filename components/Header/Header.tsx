@@ -5,7 +5,8 @@ import { MdArrowDropDown, MdFavoriteBorder } from "react-icons/md";
 import { Button } from "../Button";
 import { useRouter } from "next/router";
 import { useCurrentUser } from "../../data/queries/useCurrentUser";
-import { Dropdown } from "./Dropdown";
+import { Dropdown } from "../Dropdown/Dropdown";
+import { supabase } from "../../lib/supabase";
 
 interface IHeaderProps {
   showAddPost?: boolean;
@@ -20,7 +21,7 @@ export const Header = (props: IHeaderProps) => {
   const { data: user } = useCurrentUser();
 
   return (
-    <div className="flex flex-row items-center justify-between w-full h-24">
+    <div className="z-50 flex flex-row items-center justify-between w-full h-24">
       <Link href="/">
         <a>
           <Image
@@ -40,7 +41,7 @@ export const Header = (props: IHeaderProps) => {
         )}
         <Link href="/likes">
           <a>
-            <MdFavoriteBorder className="w-8 h-8 mr-4 text-gray-500" />
+            <MdFavoriteBorder className="w-8 h-8 mr-4 text-gray-400" />
           </a>
         </Link>
         <div className="relative w-10 h-10 mr-2">
@@ -57,7 +58,22 @@ export const Header = (props: IHeaderProps) => {
             </a>
           </Link>
         </div>
-        <Dropdown />
+        <Dropdown
+          options={[
+            {
+              text: "My profile",
+              onClick: () => router.push(`/user/${user?.username}`),
+            },
+            {
+              text: "Logout",
+              type: "destructive",
+              onClick: async () => {
+                await supabase.auth.signOut();
+                router.replace("/auth");
+              },
+            },
+          ]}
+        />
       </div>
     </div>
   );

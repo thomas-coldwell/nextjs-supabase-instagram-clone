@@ -4,10 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useMemo } from "react";
-import { MdComment, MdFavoriteBorder } from "react-icons/md";
+import {
+  MdComment,
+  MdFavoriteBorder,
+  MdMenu,
+  MdMore,
+  MdMoreHoriz,
+} from "react-icons/md";
 import { supabase } from "../../../../lib/supabase";
 import dayjs from "dayjs";
 import { IconButton } from "./IconButton";
+import { Dropdown } from "../../../Dropdown/Dropdown";
 
 interface IPostProps {
   data: PostInterface & {
@@ -63,23 +70,36 @@ const Post = ({ data }: IPostProps) => {
 
   return (
     <div className="flex flex-col w-full max-w-md mb-4">
-      <Link href={`/user/${author.username}`}>
-        <a className="flex flex-row items-center justify-start w-full py-4">
-          <div className="relative w-10 h-10 mr-4">
-            <div className="absolute w-full h-full overflow-hidden bg-gray-300 rounded-full">
-              {author && (
-                <Image
-                  src={avatarUrl}
-                  className="w-full h-full"
-                  alt={`${author.firstName} ${author.lastName}`}
-                  layout="fill"
-                />
-              )}
-            </div>
-          </div>
-          <p className="font-medium text-gray-800">{author.username}</p>
-        </a>
-      </Link>
+      <div className="z-10 flex flex-row items-center justify-between w-full py-4">
+        <div className="flex flex-row items-center">
+          <Link href={`/user/${author.username}`}>
+            <a className="relative w-10 h-10 mr-4">
+              <div className="absolute w-full h-full overflow-hidden bg-gray-300 rounded-full">
+                {author && (
+                  <Image
+                    src={avatarUrl}
+                    className="w-full h-full"
+                    alt={`${author.firstName} ${author.lastName}`}
+                    layout="fill"
+                  />
+                )}
+              </div>
+            </a>
+          </Link>
+          <Link href={`/user/${author.username}`}>
+            <a className="font-medium text-gray-800">{author.username}</a>
+          </Link>
+        </div>
+        <Dropdown
+          options={[
+            {
+              text: "Would you like an easter egg?",
+              onClick: () => alert("Okay, here you go 🥚"),
+            },
+          ]}
+          icon={MdMoreHoriz}
+        />
+      </div>
       <div className="w-full mb-4 overflow-hidden bg-gray-300 rounded-md aspect-w-1 aspect-h-1">
         {image && (
           <Image
