@@ -23,7 +23,7 @@ export default function handler(
       ).map((following) => following.user);
       const posts = await prisma.post.findMany({
         where: { author: { id: { in: followings.map((user) => user.id) } } },
-        include: { author: true },
+        include: { author: true, likes: true },
         orderBy: [{ createdAt: "desc" }],
       });
       if (posts) {

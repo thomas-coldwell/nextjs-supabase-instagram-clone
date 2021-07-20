@@ -1,4 +1,4 @@
-import { Post as PostInterface, User } from "@prisma/client";
+import { Post as PostInterface, PostLike, User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useMemo } from "react";
 import {
   MdComment,
+  MdFavorite,
   MdFavoriteBorder,
   MdMenu,
   MdMore,
@@ -15,10 +16,14 @@ import { supabase } from "../../../../lib/supabase";
 import dayjs from "dayjs";
 import { IconButton } from "./IconButton";
 import { Dropdown } from "../../../Dropdown/Dropdown";
+import { useAddPostLike } from "../../../../data/mutations/useAddPostLike";
+import { useCurrentUser } from "../../../../data/queries/useCurrentUser";
+import { useDeletePostLike } from "../../../../data/mutations/useDeletePostLike";
 
 interface IPostProps {
   data: PostInterface & {
     author: User;
+    likes: PostLike[];
   };
 }
 
@@ -27,6 +32,25 @@ const Post = ({ data }: IPostProps) => {
   const { caption, createdAt, author, images } = data;
 
   const [image, setImage] = useState<string | null>(null);
+
+  const { data: currentUser } = useCurrentUser();
+
+  const { mutateAsync: likePost, isLoading: isLikingPost } = useAddPostLike();
+  const { mutateAsync: unlikePost, isLoading: isUnlikingPost } =
+    useDeletePostLike();
+
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      const hasLikedPost = data.likes
+        .map((l) => l.userId)
+        .includes(currentUser.id);
+      if (hasLikedPost) {
+        setLiked(true);
+      }
+    }
+  }, [currentUser, data]);
 
   const avatarUrl = useMemo(() => {
     const { publicURL, error } = supabase.storage
@@ -112,7 +136,21 @@ const Post = ({ data }: IPostProps) => {
         )}
       </div>
       <div className="flex flex-row items-center w-full mb-4">
-        <IconButton icon={MdFavoriteBorder} />
+        <IconButton
+          icon={liked ? MdFavorite : MdFavoriteBorder}
+          className={liked ? "text-red-600" : ""}
+          disabled={isLikingPost || isUnlikingPost}
+          onClick={async () => {
+            if (currentUser) {
+              if (liked) {
+                unlikePost({ userId: currentUser?.id, postId: data.id });
+              } else {
+                likePost({ userId: currentUser?.id, postId: data.id });
+              }
+              setLiked((l) => !l);
+            }
+          }}
+        />
         <IconButton icon={MdComment} />
       </div>
       <p className="text-gray-800">
