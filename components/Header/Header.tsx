@@ -39,11 +39,6 @@ export const Header = (props: IHeaderProps) => {
             <Button onClick={() => router.push("/post")}>Add Post</Button>
           </div>
         )}
-        <Link href="/likes">
-          <a>
-            <MdFavoriteBorder className="w-8 h-8 mr-4 text-gray-400" />
-          </a>
-        </Link>
         <div className="relative w-10 h-10 mr-2">
           <Link href={`/user/${user?.username}`}>
             <a className="absolute w-full h-full overflow-hidden bg-gray-300 rounded-full">

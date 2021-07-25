@@ -1,13 +1,14 @@
 import { GetServerSideProps } from "next";
 import { Header } from "../../components/Header/Header";
+import { Post } from "../../components/screens/User/Post/Post";
 import {
   ProfileDetails,
   UserProfileDetails,
 } from "../../components/screens/User/ProfileDetails";
 import withAuth from "../../components/withAuth";
+import { useProfileFeed } from "../../data/queries/useProfileFeed";
 import { prisma } from "../../lib/prisma";
 import { supabase } from "../../lib/supabase";
-
 interface IUserProps {
   user: UserProfileDetails;
 }
@@ -16,10 +17,17 @@ const UserProfile = (props: IUserProps) => {
   //
   const { user } = props;
 
+  const { data: posts } = useProfileFeed(user.username);
+
   return (
     <div className="w-full px-4">
       <Header />
       <ProfileDetails user={user} />
+      <div className="grid grid-cols-3 gap-1 my-4 md:my-16 sm:gap-4">
+        {posts?.map((post, index) => {
+          return <Post key={post.id} data={post} />;
+        })}
+      </div>
     </div>
   );
 };
