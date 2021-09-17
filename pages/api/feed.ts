@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { Post, Prisma, User } from "@prisma/client";
+import { Post, Prisma, User, PostLike } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../lib/prisma";
 
@@ -8,6 +8,7 @@ export default function handler(
   res: NextApiResponse<
     (Post & {
       author: User;
+      likes: PostLike[];
     })[]
   >
 ) {

@@ -1,4 +1,4 @@
-import { Post, User } from "@prisma/client";
+import { Post, User, PostLike } from "@prisma/client";
 import { useQuery } from "react-query";
 import { baseUrl } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
@@ -12,6 +12,7 @@ export const useFeed = () => {
       if (response.ok) {
         const posts = (await response.json()) as (Post & {
           author: User;
+          likes: PostLike[];
         })[];
         return posts;
       } else {

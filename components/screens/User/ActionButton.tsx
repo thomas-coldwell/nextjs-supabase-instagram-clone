@@ -14,7 +14,7 @@ export const ActionButton = ({ id, username }: IActionButtonProps) => {
   const session = supabase.auth.session();
   const isPersonalProfile = session?.user?.id === id;
 
-  const { data: following } = useFollowing(id);
+  const { data: following } = useFollowing(id, { enabled: !isPersonalProfile });
   const { mutateAsync: addFollowing, isLoading: isAddingFollowing } =
     useAddFollowing(id);
   const { mutateAsync: deleteFollowing, isLoading: isDeletingFollowing } =
