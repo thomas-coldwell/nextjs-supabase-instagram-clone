@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { MdComment, MdFavorite } from "react-icons/md";
-import { useCurrentUser } from "../../../../data/queries/useCurrentUser";
 import { supabase } from "../../../../lib/supabase";
 import { StatsCounter } from "./StatsCounter";
 
@@ -26,13 +25,6 @@ export const Post = ({ data }: IPostProps) => {
   const { caption, createdAt, author, images } = data;
 
   const [image, setImage] = useState<string | null>(null);
-
-  const avatarUrl = useMemo(() => {
-    const { publicURL, error } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(author.profilePicture);
-    return publicURL ? publicURL : "";
-  }, [author]);
 
   useEffect(() => {
     const imgPath = images[0];

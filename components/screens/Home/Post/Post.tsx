@@ -16,9 +16,8 @@ import { supabase } from "../../../../lib/supabase";
 import dayjs from "dayjs";
 import { IconButton } from "./IconButton";
 import { Dropdown } from "../../../Dropdown/Dropdown";
-import { useAddPostLike } from "../../../../data/mutations/useAddPostLike";
-import { useCurrentUser } from "../../../../data/queries/useCurrentUser";
-import { useDeletePostLike } from "../../../../data/mutations/useDeletePostLike";
+import { useCurrentUser } from "../../../../utils/useCurrentUser";
+import { trpc } from "../../../../utils/trpc";
 
 interface IPostProps {
   data: PostInterface & {
@@ -35,9 +34,10 @@ const Post = ({ data }: IPostProps) => {
 
   const { data: currentUser } = useCurrentUser();
 
-  const { mutateAsync: likePost, isLoading: isLikingPost } = useAddPostLike();
+  const { mutateAsync: likePost, isLoading: isLikingPost } =
+    trpc.useMutation("like.create");
   const { mutateAsync: unlikePost, isLoading: isUnlikingPost } =
-    useDeletePostLike();
+    trpc.useMutation("like.delete");
 
   const [liked, setLiked] = useState(false);
 

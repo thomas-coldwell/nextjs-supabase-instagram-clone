@@ -8,7 +8,7 @@ import { Button } from "../../components/Button";
 import { uriToFile } from "../../utils/uriToFile";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../lib/supabase";
-import { useAddPost } from "../../data/mutations/useAddPost";
+import { trpc } from "../../utils/trpc";
 
 interface PostValues {
   images: string[];
@@ -24,7 +24,7 @@ const Post = () => {
   //
   const router = useRouter();
 
-  const { mutate: addPost } = useAddPost();
+  const postAdd = trpc.useMutation("post.add");
 
   const handleSubmit = async ({ images, caption }: PostValues) => {
     const session = supabase.auth.session();
@@ -38,7 +38,7 @@ const Post = () => {
         .from("post-photos")
         .upload(photoPath, photoFile);
       if (!photo.data || photo.error) throw photo.error;
-      await addPost({
+      await postAdd.mutateAsync({
         images: [photoPath],
         caption,
         authorId: session.user.id,

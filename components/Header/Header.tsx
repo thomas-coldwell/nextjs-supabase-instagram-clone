@@ -4,9 +4,9 @@ import Image from "next/image";
 import { MdArrowDropDown, MdFavoriteBorder } from "react-icons/md";
 import { Button } from "../Button";
 import { useRouter } from "next/router";
-import { useCurrentUser } from "../../data/queries/useCurrentUser";
 import { Dropdown } from "../Dropdown/Dropdown";
 import { supabase } from "../../lib/supabase";
+import { useCurrentUser } from "../../utils/useCurrentUser";
 
 interface IHeaderProps {
   showAddPost?: boolean;
