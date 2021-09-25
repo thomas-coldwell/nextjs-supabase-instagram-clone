@@ -15,6 +15,7 @@ import { baseUrl } from "../../lib/auth";
 import { Prisma } from "@prisma/client";
 import { PhotoInput } from "../../components/PhotoInput/PhotoInput";
 import { uriToFile } from "../../utils/uriToFile";
+import { trpc } from "../../utils/trpc";
 
 interface SignUpValues {
   email: string;
@@ -38,15 +39,7 @@ const SignUp = () => {
   //
   const router = useRouter();
 
-  const userMutation = useMutation(async (user: Prisma.UserCreateInput) => {
-    const response = await fetch(`${baseUrl}/api/user`, {
-      method: "POST",
-      body: JSON.stringify(user),
-    });
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-  });
+  const userAdd = trpc.useMutation("user.add");
 
   const handleSubmit = async ({
     email,
@@ -69,7 +62,7 @@ const SignUp = () => {
         .from("avatars")
         .upload(avatarPath, avatarFile);
       if (!avatar.data || avatar.error) throw avatar.error;
-      await userMutation.mutate({
+      await userAdd.mutateAsync({
         id: signUp.user.id,
         email,
         profilePicture: avatarPath,

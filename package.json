@@ -13,7 +13,11 @@
     "@supabase/supabase-js": "^1.22.6",
     "@supabase/ui": "^0.28.1",
     "@tailwindcss/aspect-ratio": "^0.2.1",
-    "babel-plugin-superjson-next": "^0.3.0",
+    "@trpc/client": "^9.7.0",
+    "@trpc/next": "^9.7.0",
+    "@trpc/react": "^9.7.0",
+    "@trpc/server": "^9.7.0",
+    "babel-plugin-superjson-next": "^0.4.1",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.6",
     "formik": "^2.2.9",
@@ -30,12 +34,13 @@
     "react-icons": "^4.2.0",
     "react-modal": "^3.14.3",
     "react-outside-click-handler": "^1.3.0",
-    "react-query": "^3.18.1",
+    "react-query": "^3.24.4",
     "react-responsive": "^8.2.0",
     "react-svg": "^14.0.5",
     "react-use": "^17.2.4",
     "superjson": "^1.7.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "zod": "^3.8.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",

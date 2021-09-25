@@ -6,9 +6,9 @@ import {
   UserProfileDetails,
 } from "../../components/screens/User/ProfileDetails";
 import withAuth from "../../components/withAuth";
-import { useProfileFeed } from "../../data/queries/useProfileFeed";
 import { prisma } from "../../lib/prisma";
 import { supabase } from "../../lib/supabase";
+import { trpc } from "../../utils/trpc";
 interface IUserProps {
   user: UserProfileDetails;
 }
@@ -17,7 +17,10 @@ const UserProfile = (props: IUserProps) => {
   //
   const { user } = props;
 
-  const { data: posts } = useProfileFeed(user.username);
+  const { data: posts } = trpc.useQuery([
+    "profileFeed.all",
+    { username: user.username },
+  ]);
 
   return (
     <div className="w-full px-4">
