@@ -22,8 +22,10 @@ Then we can create our environment file as follows:
 
 ```bash
 # .env
-NEXT_PUBLIC_SUPABASE_HOST="https://__PROJECT_ID__.supabase.co" # Can be found in Settings > API
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key" # Can be found in Settings > API
+
+# Can be found in Settings > API
+NEXT_PUBLIC_SUPABASE_HOST="https://__PROJECT_ID__.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
 
 # Prisma DB URLs - can be found in Databases > Connection pooling
 # Ensure you set the port to 6543 on this page too!
