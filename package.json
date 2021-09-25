@@ -1,5 +1,13 @@
 {
   "name": "nextjs-supabase",
+  "license": "MIT",
+  "keywords": [
+    "nextjs",
+    "supabase",
+    "react",
+    "trpc",
+    "prisma"
+  ],
   "version": "0.1.0",
   "private": true,
   "scripts": {
