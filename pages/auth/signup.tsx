@@ -155,4 +155,4 @@ const SignUp = () => {
   );
 };
 
-export default withAuthRedirect(SignUp);
+export default SignUp;

@@ -83,4 +83,4 @@ const Login = () => {
   );
 };
 
-export default withAuthRedirect(Login);
+export default Login;

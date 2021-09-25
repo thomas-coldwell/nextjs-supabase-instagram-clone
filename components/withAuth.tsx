@@ -16,6 +16,7 @@ const withAuth = (AuthedComponent: AuthedComponent) => {
       if (!session?.access_token) {
         router.replace("/auth");
       } else {
+        // If they do have an acess token we need to verify it
         fetch(`${baseUrl}/api/auth/getUser`, {
           method: "GET",
           headers: new Headers({
