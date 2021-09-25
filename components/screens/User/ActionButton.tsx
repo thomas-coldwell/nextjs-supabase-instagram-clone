@@ -1,8 +1,6 @@
 import { supabase } from "../../../lib/supabase";
 import cn from "classnames";
-import { useFollowing } from "../../../data/queries/useFollowing";
-import { useAddFollowing } from "../../../data/mutations/useAddFollowing";
-import { useDeleteFollowing } from "../../../data/mutations/useDeleteFollowing";
+import { trpc } from "../../../utils/trpc";
 
 interface IActionButtonProps {
   id: string;
@@ -14,19 +12,36 @@ export const ActionButton = ({ id, username }: IActionButtonProps) => {
   const session = supabase.auth.session();
   const isPersonalProfile = session?.user?.id === id;
 
-  const { data: following } = useFollowing(id, { enabled: !isPersonalProfile });
+  const { data: following, refetch: refetchFollowing } = trpc.useQuery(
+    [
+      "following.active",
+      { userId: id, followerId: supabase.auth.user()?.id ?? "" },
+    ],
+    { enabled: !isPersonalProfile }
+  );
   const { mutateAsync: addFollowing, isLoading: isAddingFollowing } =
-    useAddFollowing(id);
+    trpc.useMutation("following.create", {
+      onSuccess: (data) => {
+        refetchFollowing();
+      },
+    });
   const { mutateAsync: deleteFollowing, isLoading: isDeletingFollowing } =
-    useDeleteFollowing(following?.id);
+    trpc.useMutation("following.delete", {
+      onSuccess: () => {
+        refetchFollowing();
+      },
+    });
 
   const handleClick = async () => {
     if (isPersonalProfile) {
     } else {
       if (following) {
-        await deleteFollowing();
+        await deleteFollowing({ id: following.id });
       } else {
-        await addFollowing();
+        await addFollowing({
+          followerId: supabase.auth.user()?.id,
+          userId: id,
+        });
       }
     }
   };
