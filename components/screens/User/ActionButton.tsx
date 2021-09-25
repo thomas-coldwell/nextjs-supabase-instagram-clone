@@ -12,22 +12,20 @@ export const ActionButton = ({ id, username }: IActionButtonProps) => {
   const session = supabase.auth.session();
   const isPersonalProfile = session?.user?.id === id;
 
-  const utils = trpc.useContext();
-
-  const { data: following } = trpc.useQuery([
+  const { data: following, refetch: refetchFollowing } = trpc.useQuery([
     "following.active",
     { userId: id, followerId: supabase.auth.user()?.id ?? "" },
   ]);
   const { mutateAsync: addFollowing, isLoading: isAddingFollowing } =
     trpc.useMutation("following.create", {
-      onSuccess: () => {
-        utils.invalidateQuery(["following.active"]);
+      onSuccess: (data) => {
+        refetchFollowing();
       },
     });
   const { mutateAsync: deleteFollowing, isLoading: isDeletingFollowing } =
     trpc.useMutation("following.delete", {
       onSuccess: () => {
-        utils.invalidateQuery(["following.active"]);
+        refetchFollowing();
       },
     });
 

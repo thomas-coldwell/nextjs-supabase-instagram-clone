@@ -17,7 +17,7 @@
     "@trpc/next": "^9.7.0",
     "@trpc/react": "^9.7.0",
     "@trpc/server": "^9.7.0",
-    "babel-plugin-superjson-next": "^0.3.0",
+    "babel-plugin-superjson-next": "^0.4.1",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.6",
     "formik": "^2.2.9",

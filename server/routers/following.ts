@@ -21,7 +21,7 @@ export const followingRouter = createRouter()
     input: z.object({ followerId: z.string().nullish(), userId: z.string() }),
     async resolve({ ctx, input: { followerId, userId } }) {
       if (!followerId) {
-        return new TRPCError({
+        throw new TRPCError({
           code: "BAD_REQUEST",
           message: "followerId is required",
         });

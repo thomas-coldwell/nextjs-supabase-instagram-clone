@@ -12,7 +12,7 @@ export const likeRouter = createRouter()
     input: z.object({ userId: z.string().nullish(), postId: z.number() }),
     async resolve({ ctx, input: { userId, postId } }) {
       if (!userId) {
-        return new TRPCError({
+        throw new TRPCError({
           code: "BAD_REQUEST",
           message: "userId is required",
         });
@@ -27,7 +27,7 @@ export const likeRouter = createRouter()
     input: z.object({ userId: z.string().nullish(), postId: z.number() }),
     async resolve({ ctx, input: { userId, postId } }) {
       if (!userId) {
-        return new TRPCError({
+        throw new TRPCError({
           code: "BAD_REQUEST",
           message: "userId is required",
         });

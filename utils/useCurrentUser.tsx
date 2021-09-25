@@ -2,5 +2,6 @@ import { supabase } from "../lib/supabase";
 import { trpc } from "./trpc";
 
 export const useCurrentUser = () => {
-  return trpc.useQuery(["user.byId", { id: supabase.auth.user()?.id }]);
+  const id = supabase.auth.user()?.id;
+  return trpc.useQuery(["user.byId", { id }]);
 };
