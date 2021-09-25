@@ -12,10 +12,13 @@ export const ActionButton = ({ id, username }: IActionButtonProps) => {
   const session = supabase.auth.session();
   const isPersonalProfile = session?.user?.id === id;
 
-  const { data: following, refetch: refetchFollowing } = trpc.useQuery([
-    "following.active",
-    { userId: id, followerId: supabase.auth.user()?.id ?? "" },
-  ]);
+  const { data: following, refetch: refetchFollowing } = trpc.useQuery(
+    [
+      "following.active",
+      { userId: id, followerId: supabase.auth.user()?.id ?? "" },
+    ],
+    { enabled: !isPersonalProfile }
+  );
   const { mutateAsync: addFollowing, isLoading: isAddingFollowing } =
     trpc.useMutation("following.create", {
       onSuccess: (data) => {

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^2.26.0",
-    "@supabase/supabase-js": "^1.19.0",
+    "@supabase/supabase-js": "^1.22.6",
     "@supabase/ui": "^0.28.1",
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "@trpc/client": "^9.7.0",
