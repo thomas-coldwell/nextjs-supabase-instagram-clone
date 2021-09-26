@@ -8,14 +8,8 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 export const feedRouter = createRouter().query("all", {
-  input: z.object({ userId: z.string().nullish() }),
+  input: z.object({ userId: z.string() }),
   async resolve({ ctx, input: { userId } }) {
-    if (!userId) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: `userId must not be null`,
-      });
-    }
     const followings = await (
       await ctx.prisma.user
         .findFirst({ where: { id: userId } })
