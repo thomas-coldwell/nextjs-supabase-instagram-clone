@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect } from "react";
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "../server/routers/_app";
-import { httpLink } from "@trpc/client/links/httpLink";
 import superjson from "superjson";
 
 const queryClient = new QueryClient();
@@ -48,7 +47,7 @@ export default withTRPC<AppRouter>({
         : "http://localhost:3000/api/trpc";
 
     return {
-      links: [httpLink({ url })],
+      url,
       transformer: superjson,
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient

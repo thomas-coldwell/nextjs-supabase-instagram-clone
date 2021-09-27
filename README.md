@@ -24,7 +24,7 @@ Then we can create our environment file as follows:
 # .env
 
 # Can be found in Settings > API
-NEXT_PUBLIC_SUPABASE_HOST="https://__PROJECT_ID__.supabase.co"
+NEXT_PUBLIC_SUPABASE_URL="https://__PROJECT_ID__.supabase.co"
 NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
 
 # Prisma DB URLs - can be found in Databases > Connection pooling
