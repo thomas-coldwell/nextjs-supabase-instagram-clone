@@ -13,10 +13,7 @@ export const ActionButton = ({ id, username }: IActionButtonProps) => {
   const isPersonalProfile = session?.user?.id === id;
 
   const { data: following, refetch: refetchFollowing } = trpc.useQuery(
-    [
-      "following.active",
-      { userId: id, followerId: supabase.auth.user()?.id ?? "" },
-    ],
+    ["following.active", { userId: id }],
     { enabled: !isPersonalProfile }
   );
   const { mutateAsync: addFollowing, isLoading: isAddingFollowing } =
@@ -39,7 +36,6 @@ export const ActionButton = ({ id, username }: IActionButtonProps) => {
         await deleteFollowing({ id: following.id });
       } else {
         await addFollowing({
-          followerId: supabase.auth.user()?.id,
           userId: id,
         });
       }

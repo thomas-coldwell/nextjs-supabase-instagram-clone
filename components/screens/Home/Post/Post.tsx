@@ -143,9 +143,9 @@ const Post = ({ data }: IPostProps) => {
           onClick={async () => {
             if (currentUser) {
               if (liked) {
-                unlikePost({ userId: currentUser?.id, postId: data.id });
+                unlikePost({ postId: data.id });
               } else {
-                likePost({ userId: currentUser?.id, postId: data.id });
+                likePost({ postId: data.id });
               }
               setLiked((l) => !l);
             }

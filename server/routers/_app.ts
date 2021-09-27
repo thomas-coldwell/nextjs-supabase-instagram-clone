@@ -1,6 +1,7 @@
 /**
  * This file contains the root router of your tRPC-backend
  */
+import { TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { createRouter } from "../createRouter";
 import { feedRouter } from "./feed";
@@ -22,11 +23,6 @@ export const appRouter = createRouter()
    * @link https://trpc.io/docs/data-transformers
    */
   .transformer(superjson)
-  /**
-   * Optionally do custom error (type safe!) formatting
-   * @link https://trpc.io/docs/error-formatting
-   */
-  // .formatError(({ shape, error }) => { })
   .merge("post.", postRouter)
   .merge("user.", userRouter)
   .merge("profileFeed.", profileFeedRouter)
