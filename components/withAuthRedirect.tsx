@@ -7,11 +7,14 @@ const withAuthRedirect = (AuthedComponent: React.ComponentType) => {
   const HOC = (props: any) => {
     const router = useRouter();
     useEffect(() => {
-      const session = supabase.auth.session();
-      // If we are already logged in then redirect to the home screen
-      if (session?.access_token) {
-        router.replace("/");
-      }
+      const session = supabase.auth.onAuthStateChange((event, session) => {
+        if (session) {
+          // If we are already logged in then redirect to the home screen
+          if (session?.access_token) {
+            router.replace("/");
+          }
+        }
+      });
     }, []);
     return <AuthedComponent {...props} />;
   };

@@ -25,9 +25,7 @@ const Login = () => {
   const handleSubmit = async ({ email, password }: LoginValues) => {
     setSubmitting(true);
     const { user, error } = await supabase.auth.signIn({ email, password });
-    if (user) {
-      router.push("/");
-    } else {
+    if (error) {
       alert(error ? error.message : "An unknown error occurred.");
       setSubmitting(false);
     }
