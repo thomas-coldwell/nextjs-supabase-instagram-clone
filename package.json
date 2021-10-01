@@ -14,7 +14,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:dev": "DATABASE_URL=$MIGRATE_DB_URL npx prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^2.26.0",

@@ -34,7 +34,7 @@ DATABASE_URL="postgres://postgres:##############.supabase.co:6543/postgres?pgbou
 Now we can run Prisma to firstly perform our schema migration to Supabase and then generate our Prisma client locally:
 
 ```bash
-npx prisma migrate dev # Will setup the tables we need in Supabase from our schema
+yarn migrate:dev # Will setup the tables we need in Supabase from our schema
 ```
 
 ```bash
