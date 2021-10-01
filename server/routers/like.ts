@@ -6,34 +6,24 @@
 import { createRouter } from "../createRouter";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { authorization } from "../middleware/authorization";
 
 export const likeRouter = createRouter()
+  .middleware(authorization)
   .mutation("create", {
-    input: z.object({ userId: z.string().nullish(), postId: z.number() }),
-    async resolve({ ctx, input: { userId, postId } }) {
-      if (!userId) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "userId is required",
-        });
-      }
+    input: z.object({ postId: z.number() }),
+    async resolve({ ctx, input: { postId } }) {
       const like = await ctx.prisma.postLike.create({
-        data: { userId, postId },
+        data: { userId: ctx.user.id, postId },
       });
       return like;
     },
   })
   .mutation("delete", {
-    input: z.object({ userId: z.string().nullish(), postId: z.number() }),
-    async resolve({ ctx, input: { userId, postId } }) {
-      if (!userId) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "userId is required",
-        });
-      }
+    input: z.object({ postId: z.number() }),
+    async resolve({ ctx, input: { postId } }) {
       await ctx.prisma.postLike.deleteMany({
-        where: { userId, postId },
+        where: { userId: ctx.user.id, postId },
       });
       return;
     },

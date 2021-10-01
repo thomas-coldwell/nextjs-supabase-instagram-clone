@@ -14,10 +14,7 @@ const Home = () => {
 
   const router = useRouter();
 
-  const { data: posts } = trpc.useQuery([
-    "feed.all",
-    { userId: supabase.auth.user()?.id },
-  ]);
+  const { data: posts } = trpc.useQuery(["feed.all"]);
 
   return (
     <>

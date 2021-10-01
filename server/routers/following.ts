@@ -6,28 +6,24 @@
 import { createRouter } from "../createRouter";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { authorization } from "../middleware/authorization";
 
 export const followingRouter = createRouter()
+  .middleware(authorization)
   .query("active", {
-    input: z.object({ followerId: z.string(), userId: z.string() }),
-    async resolve({ ctx, input: { userId, followerId } }) {
+    input: z.object({ userId: z.string() }),
+    async resolve({ ctx, input: { userId } }) {
       const follower = await ctx.prisma.follower.findFirst({
-        where: { userId, followerId },
+        where: { userId, followerId: ctx.user.id },
       });
       return follower;
     },
   })
   .mutation("create", {
-    input: z.object({ followerId: z.string().nullish(), userId: z.string() }),
-    async resolve({ ctx, input: { followerId, userId } }) {
-      if (!followerId) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "followerId is required",
-        });
-      }
+    input: z.object({ userId: z.string() }),
+    async resolve({ ctx, input: { userId } }) {
       const user = await ctx.prisma.follower.create({
-        data: { followerId, userId },
+        data: { followerId: ctx.user.id, userId },
       });
       return user;
     },

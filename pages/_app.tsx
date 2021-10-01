@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "../server/routers/_app";
 import superjson from "superjson";
+import { supabase } from "../lib/supabase";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,9 @@ export default withTRPC<AppRouter>({
     return {
       url,
       transformer: superjson,
+      headers: {
+        Authorization: `Bearer ${supabase.auth.session()?.access_token}`,
+      },
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
