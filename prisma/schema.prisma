@@ -2,55 +2,56 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("MIGRATION_DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["selectRelationCount"]
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   images    String[]
   caption   String
-  author    User   @relation(fields: [authorId], references: [id])
+  author    User          @relation(fields: [authorId], references: [id])
   authorId  String
-  tags PostTag[]
-  likes PostLike[]
-  comments PostComment[]
-  createdAt DateTime @default(now())
+  tags      PostTag[]
+  likes     PostLike[]
+  comments  PostComment[]
+  createdAt DateTime      @default(now())
 }
 
 model PostLike {
-  id        Int @id @default(autoincrement())
-  user      User   @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  post      Post @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
   postId    Int
   createdAt DateTime @default(now())
 }
 
 model PostTag {
-  id   Int     @id @default(autoincrement())
-  name String
+  id    Int    @id @default(autoincrement())
+  name  String
   posts Post[]
 }
 
 model PostComment {
-  id Int     @id @default(autoincrement())
-  post      Post @relation(fields: [postId], references: [id])
+  id        Int      @id @default(autoincrement())
+  post      Post     @relation(fields: [postId], references: [id])
   postId    Int
-  comment String
-  author    User   @relation(fields: [authorId], references: [id])
+  comment   String
+  author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   createdAt DateTime @default(now())
 }
 
 model User {
-  id             String     @id @default(cuid())
-  email          String  @unique
+  id             String        @id @default(cuid())
+  email          String        @unique
   firstName      String
   lastName       String
   username       String
@@ -58,16 +59,16 @@ model User {
   posts          Post[]
   likes          PostLike[]
   comments       PostComment[]
-  followers      Follower[] @relation(name: "UserFollower")
-  followings     Follower[] @relation(name: "UserFollowing")
-  createdAt DateTime @default(now())
+  followers      Follower[]    @relation(name: "UserFollower")
+  followings     Follower[]    @relation(name: "UserFollowing")
+  createdAt      DateTime      @default(now())
 }
 
 model Follower {
-  id Int @id @default(autoincrement())
-  user User @relation(name: "UserFollower", fields: [userId], references: [id])
-  userId String
-  follower User @relation(name: "UserFollowing", fields: [followerId], references: [id])
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(name: "UserFollower", fields: [userId], references: [id])
+  userId     String
+  follower   User     @relation(name: "UserFollowing", fields: [followerId], references: [id])
   followerId String
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 }
